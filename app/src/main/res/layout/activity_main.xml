@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:id="@+id/mainContent"
+    tools:context="com.github.jruanodev.socialtech.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SocialTech"
+        android:id="@+id/title"
+        android:gravity="center"
+        android:textSize="45sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="100dp"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginTop="70dp"
+        android:id="@+id/lInputUsuario"
+        app:errorEnabled="true"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:id="@+id/inputUsuario"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:layout_below="@id/lInputUsuario"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/lInputPassword">
+
+        <EditText
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/inputPassword"
+            android:inputType="textPassword"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INICIAR SESIÓN"
+        android:layout_below="@id/lInputPassword"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:textColor="#FFFFFF"
+        android:id="@+id/btnLogin"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREAR CUENTA"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:id="@+id/tSignUp"/>
+
+</RelativeLayout>

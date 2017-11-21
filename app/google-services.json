@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "876214182299",
+    "firebase_url": "https://socialtech-18243.firebaseio.com",
+    "project_id": "socialtech-18243",
+    "storage_bucket": "socialtech-18243.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876214182299:android:846ac3421d2bffeb",
+        "android_client_info": {
+          "package_name": "com.github.jruanodev.socialtech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876214182299-7il6hnksnapmtbj8lq50l74p73esmo3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.jruanodev.socialtech",
+            "certificate_hash": "639c31c8055b6b16e974b20e2334f8dfe11dbc34"
+          }
+        },
+        {
+          "client_id": "876214182299-koc2rug98jjf48ltdd1c1s6jk9uijnec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdGWIRc2kdKpeJjNEZ04eky74GPUlPbbc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876214182299-koc2rug98jjf48ltdd1c1s6jk9uijnec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
