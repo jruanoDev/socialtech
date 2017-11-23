@@ -1,5 +1,6 @@
 package com.github.jruanodev.socialtech;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
@@ -10,25 +11,23 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jruanodev.socialtech.dao.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private FirebaseAuth mAuth;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CreateUserFragment.CloseListener {
 
     @BindView(R.id.title) TextView title;
     Typeface typeface;
@@ -39,20 +38,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.tSignUp) TextView btnCreate;
     @BindView(R.id.mainContent) View view;
 
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mAuth = FirebaseAuth.getInstance();
+
         btnLogin.setOnClickListener(this);
         btnCreate.setOnClickListener(this);
 
-        mAuth = FirebaseAuth.getInstance();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if(currentUser != null) {
+        if(mAuth.getCurrentUser() != null) {
             //Actualizar UI
         }
 
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void afterTextChanged(Editable s) {
-                checkValidEmail(inputUsuario.getText().toString());
+                User.checkValidEmail(inputUsuario.getText().toString(), inputUsuario);
             }
         });
 
@@ -91,61 +90,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void afterTextChanged(Editable s) {
-                checkValidPassword(inputPassword.getText().toString());
+                User.checkValidPassword(inputPassword.getText().toString(), inputPassword);
             }
         });
 
-    }
-
-    public boolean checkValidEmail(String email) {
-        boolean check = true;
-
-        int emailLength = email.length();
-        if(emailLength >= 20 || emailLength < 6) {
-            inputUsuario.setError("El email no puede tener más de 20 caracteres o menos de 6.");
-            check = false;
-        }
-
-        Pattern pcheck = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-        if(!pcheck.matcher(email).matches()) {
-            inputUsuario.setError("Introduzca un email válido (example@example.com)");
-            check = false;
-        }
-
-        return check;
-    }
-
-    public boolean checkValidPassword(String password) {
-        boolean check = true;
-        int passLenght = password.length();
-
-        if(passLenght < 6 || passLenght >= 15) {
-            inputPassword.setError("La contraseña no puede contener menos de 6 caracteres ni más de 15");
-            check = false;
-        }
-
-        Pattern passCheck = Pattern.compile("^[a-zA-Z0-9@._-]+$");
-        if(!passCheck.matcher(password).matches()) {
-            inputPassword.setError("Los caractéres válidos son A-Z, 0-9, @, ., - y _");
-            check = false;
-        }
-
-        return check;
-    }
-
-    public void loginWithUserAndPass(String username, String password) {
-        mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this,
-                new OnCompleteListener<AuthResult>() {
-
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(getBaseContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
-                } else {
-                    Snackbar.make(view, "Email o contraseña incorrectos.", Snackbar.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 
     @Override
@@ -174,5 +122,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
         }
+    }
+
+    public void loginWithUserAndPass(String username, String password) {
+        mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this,
+            new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()) {
+                        Toast.makeText(getBaseContext(), "Login correcto", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT);
+                    }
+                }
+            });
+    }
+
+    @Override
+    public void btnCloseClick(Fragment f) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        ft.remove(f).commit();
+    }
+
+    @Override
+    public void createUserClick(User u) {
+        mAuth.createUserWithEmailAndPassword(u.getEmail(), u.getPassword())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            // Hacer algo
+                        }
+                    }
+                });
     }
 }
