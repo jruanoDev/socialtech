@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/btnClose"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CREAR CUENTA"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:layout_marginTop="100dp"
+        android:id="@+id/cTitulo"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Solo te llevará unos segundos"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:layout_below="@id/cTitulo"
+        android:layout_centerHorizontal="true"
+        android:textSize="12sp"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cEmail"
+        android:layout_below="@id/cTitulo"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:layout_width="310dp"
+            android:id="@+id/cIEmail"
+            android:layout_height="wrap_content"
+            android:hint="Email"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/cEmail">
+
+        <EditText
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:id="@+id/cIPassword"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:id="@+id/cName">
+
+        <EditText
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:hint="Nombre"
+            android:id="@+id/cIName"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CREAR CUENTA"
+        android:layout_below="@id/cName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:id="@+id/btnCreate"/>
+
+</RelativeLayout>

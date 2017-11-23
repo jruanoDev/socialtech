@@ -1,14 +1,13 @@
 package com.github.jruanodev.socialtech;
 
+import android.support.v4.app.FragmentManager;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -40,9 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.tSignUp) TextView btnCreate;
     @BindView(R.id.mainContent) View view;
 
-    boolean a = true;
-    boolean b = true;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnLogin.setOnClickListener(this);
         btnCreate.setOnClickListener(this);
-        btnLogin.setEnabled(false);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -147,9 +142,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(task.isSuccessful()) {
                     Toast.makeText(getBaseContext(), "Login Correcto", Toast.LENGTH_SHORT).show();
                 } else {
-                    Snackbar.make(view, "Email o contraseña incorrectos.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Email o contraseña incorrectos.", Snackbar.LENGTH_LONG).show();
                 }
-
             }
         });
     }
@@ -161,15 +155,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String email = inputUsuario.getText().toString();
                 String password = inputPassword.getText().toString();
 
-                if(email == null)
-                    email = "";
-                else if(password == null)
-                    password = "";
+                if(!email.isEmpty() || !password.isEmpty())
+                    loginWithUserAndPass(email, password);
+                else
+                    Snackbar.make(view, "Los campos no pueden estar vacíos.", Snackbar.LENGTH_SHORT).show();
 
-                loginWithUserAndPass(email, password);
                 break;
 
             case R.id.tSignUp:
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+
+                CreateUserFragment c1 = new CreateUserFragment();
+                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.addToBackStack("MainActivity");
+                ft.replace(android.R.id.content, c1).commit();
+
                 break;
 
         }
