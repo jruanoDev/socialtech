@@ -19,30 +19,25 @@ import android.widget.TextView;
 
 import com.github.jruanodev.socialtech.dao.User;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CreateUserFragment extends Fragment implements View.OnClickListener {
     View inflatedView;
-    TextView titulo;
     CloseListener mCallback;
 
-    ImageView btnClose;
-    Button btnCreate;
-
-    EditText inputEmail;
-    EditText inputPassword;
-    EditText inputName;
+    @BindView(R.id.cTitulo) TextView titulo;
+    @BindView(R.id.btnClose) ImageView btnClose;
+    @BindView(R.id.btnCreate) Button btnCreate;
+    @BindView(R.id.cIEmail) EditText inputEmail;
+    @BindView(R.id.cIPassword) EditText inputPassword;
+    @BindView(R.id.cIName) EditText inputName;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         inflatedView = inflater.inflate(R.layout.fragment_createuser, container, false);
-
-        titulo = inflatedView.findViewById(R.id.cTitulo);
-        btnClose = inflatedView.findViewById(R.id.btnClose);
-        btnCreate = inflatedView.findViewById(R.id.btnCreate);
-
-        inputEmail = inflatedView.findViewById(R.id.cIEmail);
-        inputPassword = inflatedView.findViewById(R.id.cIPassword);
-        inputName = inflatedView.findViewById(R.id.cIName);
+        ButterKnife.bind(this, inflatedView);
 
         btnClose.setOnClickListener(this);
         btnCreate.setOnClickListener(this);
