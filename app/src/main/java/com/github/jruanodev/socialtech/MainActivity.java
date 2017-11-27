@@ -1,5 +1,6 @@
 package com.github.jruanodev.socialtech;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.res.AssetManager;
@@ -131,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
                         Toast.makeText(getBaseContext(), "Login correcto", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, AuxActivity.class);
+                        startActivity(intent);
                     } else {
                         Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT);
                     }
@@ -152,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            // Hacer algo
+
                         }
                     }
                 });
