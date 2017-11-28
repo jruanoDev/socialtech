@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "876214182299-70krji3k1vmib9eov7b2kopbfkp5jl3q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.jruanodev.socialtech",
+            "certificate_hash": "5e9188990f68ae025150ab599f3dd22b42a299a4"
+          }
+        },
+        {
           "client_id": "876214182299-7il6hnksnapmtbj8lq50l74p73esmo3g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

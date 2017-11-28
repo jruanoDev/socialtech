@@ -60,7 +60,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Nombre y Apellidos"
                     android:id="@+id/iNombre"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:maxLength="30"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -90,7 +91,8 @@
                     android:hint="Telefono"
                     android:id="@+id/iTelefono"
                     android:inputType="phone"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:maxLength="15"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -120,7 +122,8 @@
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:id="@+id/iEmail"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:maxLength="15"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -171,13 +174,13 @@
             android:orientation="horizontal"
             android:layout_marginLeft="75dp"
             android:layout_marginTop="5dp"
+            android:id="@+id/sGroup"
             android:layout_marginBottom="20dp">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sMasculino"
-                android:checked="true"/>
+                android:id="@+id/sMasculino"/>
 
             <TextView
                 android:layout_width="wrap_content"
