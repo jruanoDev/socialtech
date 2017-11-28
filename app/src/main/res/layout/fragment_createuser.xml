@@ -46,6 +46,7 @@
         <EditText
             android:layout_width="310dp"
             android:id="@+id/cIEmail"
+            android:inputType="textEmailAddress"
             android:layout_height="wrap_content"
             android:hint="Email"/>
     </android.support.design.widget.TextInputLayout>

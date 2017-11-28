@@ -239,7 +239,8 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:id="@+id/formationTextView"
-            android:layout_marginLeft="62dp"/>
+            android:layout_marginLeft="62dp"
+            android:maxLines="4"/>
 
     </LinearLayout>
 
@@ -247,10 +248,11 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:text="GUARDAR"
-        android:layout_toLeftOf="@id/btnReset"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:backgroundTint="@color/colorAccent"
         android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:id="@+id/btnSave"/>
@@ -260,7 +262,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="10dp"
         android:fontFamily="sans-serif-medium"
         android:text="RESETEAR"
         android:textSize="14sp"
@@ -268,6 +270,6 @@
         android:textColor="@color/colorPrimary"
         android:backgroundTint="#00ffffff"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_toLeftOf="@id/btnSave"/>
 
 </RelativeLayout>

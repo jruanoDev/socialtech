@@ -17,7 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.github.jruanodev.socialtech.dao.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -120,8 +123,11 @@ public class CreateUserFragment extends Fragment implements View.OnClickListener
                 boolean c = User.checkValidName(inputName.getText().toString(), inputName);
 
                 if(a && b && c) {
-                    mCallback.createUserClick(new User(inputEmail.getText().toString(),
-                            inputPassword.getText().toString(), inputName.getText().toString()));
+                    User user = new User(inputEmail.getText().toString(),
+                            inputPassword.getText().toString(), inputName.getText().toString());
+
+                    mCallback.createUserClick(user);
+
                 } else {
                     Snackbar.make(inflatedView, "Introduce datos correctos en los campos.",
                             Snackbar.LENGTH_SHORT);

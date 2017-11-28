@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -36,12 +38,12 @@ public class FormFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.ageCounter) TextView ageCounter;
     @BindView(R.id.sMasculino) RadioButton sMasculino;
     @BindView(R.id.sFemenino) RadioButton sFemenino;
-    @BindView(R.id.formationTextView) AutoCompleteTextView fTextView;
+    @BindView(R.id.formationTextView) MultiAutoCompleteTextView fTextView;
     @BindView(R.id.btnSave) Button btnSave;
     @BindView(R.id.btnReset) TextView btnReset;
 
-    private final String[] profesiones = {"SMR", "DAM", "DAW", "ASIR", "Ingeniería Técnica Informática",
-        "Grado", "Otros"};
+    private static final String[] PROFESIONES = new String[] {"SMR", "DAM", "DAW",
+            "ASIR", "Ingeniería Técnica Informática", "Grado", "Otros"};
 
     @Nullable
     @Override
@@ -50,6 +52,12 @@ public class FormFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, inflatedView);
 
         resetAllInputs();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_dropdown_item_1line, PROFESIONES);
+
+        fTextView.setAdapter(adapter);
+        fTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         btnSave.setOnClickListener(this);
         btnReset.setOnClickListener(this);

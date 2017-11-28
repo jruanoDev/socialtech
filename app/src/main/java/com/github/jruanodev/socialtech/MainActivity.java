@@ -19,11 +19,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.github.jruanodev.socialtech.dao.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCreate.setOnClickListener(this);
 
         if(mAuth.getCurrentUser() != null) {
-            //Actualizar UI
+            Log.v("AUTENTIFICACION", "CONECTADO");
+        } else {
+            Log.v("AUTENTIFICACION", "DESCONECTADO");
         }
 
         AssetManager am = getApplicationContext().getAssets();
@@ -134,6 +144,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(getBaseContext(), "Login correcto", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, AuxActivity.class);
                         startActivity(intent);
+
+                        FirebaseDatabase.getInstance().getReference("/").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    HashMap<String, Object> uid = (HashMap<String, Object>) snapshot.getValue();
+
+                                    for(String key : uid.keySet()) {
+                                        FirebaseDatabase.getInstance().getReference("/users/" + key)
+                                                .addListenerForSingleValueEvent(
+                                                        new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                for(DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
+                                                                    String data = (String) snapshot1.getValue();
+                                                                    Log.v("PRUEBA", "" + snapshot1.getChildrenCount());
+
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+
+                                                            }
+                                                        }
+                                                );
+                                    }
+                                }
+                            }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
                     } else {
                         Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT);
                     }
@@ -155,6 +201,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
+                            DatabaseManager dbm = new DatabaseManager(FirebaseAuth
+                                    .getInstance()
+                                    .getCurrentUser());
+
+                            dbm.createUserData();
+
+                            Intent intent = new Intent(MainActivity.this, AuxActivity.class);
+                            startActivity(intent);
+
 
                         }
                     }
