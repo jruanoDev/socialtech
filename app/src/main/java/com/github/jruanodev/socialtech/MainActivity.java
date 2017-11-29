@@ -145,40 +145,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intent = new Intent(MainActivity.this, AuxActivity.class);
                         startActivity(intent);
 
-                        FirebaseDatabase.getInstance().getReference("/").addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    HashMap<String, Object> uid = (HashMap<String, Object>) snapshot.getValue();
+                        DatabaseManager db =
+                                new DatabaseManager(FirebaseAuth.getInstance().getCurrentUser());
 
-                                    for(String key : uid.keySet()) {
-                                        FirebaseDatabase.getInstance().getReference("/users/" + key)
-                                                .addListenerForSingleValueEvent(
-                                                        new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                for(DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
-                                                                    String data = (String) snapshot1.getValue();
-                                                                    Log.v("PRUEBA", "" + snapshot1.getChildrenCount());
-
-                                                                }
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(DatabaseError databaseError) {
-
-                                                            }
-                                                        }
-                                                );
-                                    }
-                                }
-                            }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                        db.createContact();
 
                     } else {
                         Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT);
