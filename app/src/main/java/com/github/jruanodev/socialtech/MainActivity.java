@@ -145,11 +145,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intent = new Intent(MainActivity.this, AuxActivity.class);
                         startActivity(intent);
 
-                        DatabaseManager db =
-                                new DatabaseManager(FirebaseAuth.getInstance().getCurrentUser());
-
-                        db.createContact();
-
                     } else {
                         Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT);
                     }
@@ -171,9 +166,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            DatabaseManager dbm = new DatabaseManager(FirebaseAuth
-                                    .getInstance()
-                                    .getCurrentUser());
+                            DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
+                            DatabaseManager dbm = new DatabaseManager();
 
                             dbm.createUserData();
 

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Pattern;
 
@@ -110,6 +111,8 @@ public class FormFragment extends Fragment implements View.OnClickListener {
                     Contact contact = new Contact(name, phone, email, edad, sexo, formation);
                     Log.v("CONTACTO", contact.toString());
                     DatabaseManager d = new DatabaseManager(contact);
+                    DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
+                    d.createContact();
                 }
 
                 break;

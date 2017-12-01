@@ -10,25 +10,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DatabaseManager {
     private Contact contact;
-    FirebaseUser user;
+    public static FirebaseUser user;
     private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("/users");
+
+    public DatabaseManager() {};
 
     public DatabaseManager(Contact contact) {
         this.contact = contact;
     }
 
-    public DatabaseManager(FirebaseUser user) {
-        this.user = user;
-    }
-
     public void createUserData() {
         HashMap<String, String> data = new HashMap<>();
         data.put("uid", user.getUid());
-        data.put("hola", "hola");
 
         HashMap<String, Object> finalData = new HashMap<>();
         finalData.put("/" + mDatabase.push().getKey(), data);
@@ -44,19 +43,19 @@ public class DatabaseManager {
                     HashMap<String, Object> uid = (HashMap<String, Object>) snapshot.getValue();
 
                     for(String key : uid.keySet()) {
-                        Log.v("KEY", "" + key);
+                        DatabaseReference dr = FirebaseDatabase.getInstance()
+                                .getReference("/users/" + key + "/");
 
-                        FirebaseDatabase.getInstance().getReference("/users/" + key + "/")
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                        dr.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for(DataSnapshot snapshot1 : dataSnapshot.getChildren()) {
-                                        String data = (String) snapshot1.getValue();
-                                        Log.v("PRUEBA", "" + data);
+                                        String data = (String) snapshot1.getValue().toString();
 
-                                        //TODO
-                                        // Rehacer esto con HashMaps
-
+                                        if(data != null && data.equals(user.getUid())) {
+                                            DatabaseReference dr2 = snapshot1.getRef().getParent().child("contactos");
+                                            dr2.push().setValue(contact.toMap());
+                                        }
                                     }
                                 }
 
@@ -76,4 +75,7 @@ public class DatabaseManager {
             }
         });
     }
+
+
+
 }

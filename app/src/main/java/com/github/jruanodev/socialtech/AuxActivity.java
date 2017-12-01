@@ -14,7 +14,7 @@ public class AuxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aux);
 
-        FormFragment f1 = new FormFragment();
+        ContactListFragment f1 = new ContactListFragment();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
