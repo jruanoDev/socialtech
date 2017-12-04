@@ -113,6 +113,7 @@ public class FormFragment extends Fragment implements View.OnClickListener {
                     DatabaseManager d = new DatabaseManager(contact);
                     DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
                     d.createContact();
+                    d.getCurrentUserDatabaseKey();
                 }
 
                 break;

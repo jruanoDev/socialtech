@@ -1,6 +1,7 @@
 package com.github.jruanodev.socialtech;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.res.AssetManager;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.github.jruanodev.socialtech.dao.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,12 +33,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CreateUserFragment.CloseListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CreateUserFragment.CloseListener,
+    DatabaseManager.onTaskCompleteListener {
 
     @BindView(R.id.title) TextView title;
     Typeface typeface;
@@ -48,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.mainContent) View view;
 
     FirebaseAuth mAuth;
+
+    List<Contact> contactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,8 +151,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
                         Toast.makeText(getBaseContext(), "Login correcto", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, AuxActivity.class);
-                        startActivity(intent);
+                        DatabaseManager db = new DatabaseManager();
+                        DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
+                        db.getCurrentUserDatabaseKey();
 
                     } else {
                         Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT);
@@ -178,5 +188,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
+    }
+
+    public void updateWithUserData() {
+        Intent intent = new Intent(MainActivity.this, AuxActivity.class);
+        intent.putParcelableArrayListExtra("contactList", (ArrayList<? extends Parcelable>) contactList);
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void isComplete(boolean check) {
+        if(check) {
+            DatabaseManager dc = new DatabaseManager();
+            contactList = dc.getAllContacts();
+        }
+
+    }
+
+    @Override
+    public void isContactImportComplete(boolean check) {
+        updateWithUserData();
     }
 }

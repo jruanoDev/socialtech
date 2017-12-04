@@ -1,8 +1,13 @@
 package com.github.jruanodev.socialtech.dao;
 
+import android.annotation.SuppressLint;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.HashMap;
 
-public class Contact {
+@SuppressLint("ParcelCreator")
+public class Contact implements Parcelable{
     private String name;
     private String phone;
     private String email;
@@ -66,5 +71,22 @@ public class Contact {
                 ", sex='" + sex + '\'' +
                 ", formation='" + formation + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeStringArray(new String[] {
+                this.name,
+                this.phone,
+                this.email,
+                Integer.toString(this.age),
+                this.sex,
+                this.formation
+        });
     }
 }
