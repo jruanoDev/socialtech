@@ -1,12 +1,10 @@
 package com.github.jruanodev.socialtech.dao;
 
-import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.HashMap;
 
-@SuppressLint("ParcelCreator")
 public class Contact implements Parcelable{
     private String name;
     private String phone;
@@ -23,6 +21,27 @@ public class Contact implements Parcelable{
         this.sex = sex;
         this.formation = formation;
     }
+
+    protected Contact(Parcel in) {
+        name = in.readString();
+        phone = in.readString();
+        email = in.readString();
+        age = in.readInt();
+        sex = in.readString();
+        formation = in.readString();
+    }
+
+    public static final Creator<Contact> CREATOR = new Creator<Contact>() {
+        @Override
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        @Override
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
 
     public HashMap<String, String> toMap() {
         HashMap<String, String> contactData = new HashMap<>();
@@ -80,13 +99,11 @@ public class Contact implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeStringArray(new String[] {
-                this.name,
-                this.phone,
-                this.email,
-                Integer.toString(this.age),
-                this.sex,
-                this.formation
-        });
+        parcel.writeString(name);
+        parcel.writeString(phone);
+        parcel.writeString(email);
+        parcel.writeInt(age);
+        parcel.writeString(sex);
+        parcel.writeString(formation);
     }
 }

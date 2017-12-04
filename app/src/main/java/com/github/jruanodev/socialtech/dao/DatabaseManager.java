@@ -15,14 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DatabaseManager {
-    private onTaskCompleteListener taskCheck = new MainActivity();
+    onTaskCompleteListener taskCheck;
     private Contact contact;
     public static FirebaseUser user;
     private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("/users");
     public static DatabaseReference userDatabaseReference;
     private boolean check = false;
 
-    public DatabaseManager() {};
+    public DatabaseManager() {
+    };
 
     public DatabaseManager(Contact contact) {
         this.contact = contact;
@@ -53,7 +54,8 @@ public class DatabaseManager {
         });
     }
 
-    public List<Contact> getAllContacts() {
+    public void getAllContacts() {
+        taskCheck = MainActivity._instance;
         final List<Contact> contactList = new ArrayList<>();
 
         userDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,10 +68,15 @@ public class DatabaseManager {
                         HashMap<String, Object> data = (HashMap<String, Object>) dataSnapshot.getValue();
                         for(String key : data.keySet()) {
                             HashMap<String, String> contactData = (HashMap<String, String>) data.get(key);
+                            Log.v("CONTACTO", "" + contactData.get("name"));
                             contactList.add(new Contact(contactData.get("name"), contactData.get("phone"),
                                     contactData.get("email"), Integer.parseInt(contactData.get("age")),
                                     contactData.get("sex"), contactData.get("formation")));
                         }
+
+                        Log.v("LISTA", "" + contactList);
+                        taskCheck.isContactImportComplete(contactList);
+
                     }
 
                     @Override
@@ -84,12 +91,11 @@ public class DatabaseManager {
 
             }
         });
-
-        taskCheck.isContactImportComplete(true);
-        return contactList;
     }
 
     public void getCurrentUserDatabaseKey() {
+        taskCheck = MainActivity._instance;
+
         FirebaseDatabase.getInstance().getReference("/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,7 +140,7 @@ public class DatabaseManager {
 
     public interface onTaskCompleteListener {
         public void isComplete(boolean check);
-        public void isContactImportComplete(boolean check);
+        public void isContactImportComplete(List<Contact> contactList);
     }
 
 }

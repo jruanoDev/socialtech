@@ -3,6 +3,7 @@ package com.github.jruanodev.socialtech;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +25,10 @@ public class ContactListFragment extends Fragment {
 
         ButterKnife.bind(this, inflatedView);
 
-        /*toolbar.setTitle("Hola");
+        toolbar.setTitle("Contactos");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        toolbar.setNavigationIcon(R.drawable.back_arrow);
-        toolbar.set;*/
+        toolbar.setNavigationIcon(R.drawable.menu_icon);
+        toolbar.inflateMenu(R.menu.contactlist_menu);
 
         /*TODO
             REPASAR TODO SOBRE MENUS Y TOOLBAR

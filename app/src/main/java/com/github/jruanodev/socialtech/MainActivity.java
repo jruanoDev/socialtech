@@ -1,5 +1,6 @@
 package com.github.jruanodev.socialtech;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -45,6 +46,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, CreateUserFragment.CloseListener,
     DatabaseManager.onTaskCompleteListener {
 
+    public static MainActivity _instance;
+
     @BindView(R.id.title) TextView title;
     Typeface typeface;
 
@@ -56,13 +59,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     FirebaseAuth mAuth;
 
-    List<Contact> contactList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        _instance = this;
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -190,10 +193,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
-    public void updateWithUserData() {
-        Intent intent = new Intent(MainActivity.this, AuxActivity.class);
-        intent.putParcelableArrayListExtra("contactList", (ArrayList<? extends Parcelable>) contactList);
-        startActivity(intent);
+    public void updateWithUserData(List<Contact> contactList) {
+            Intent intent = new Intent(_instance, AuxActivity.class);
+            intent.putParcelableArrayListExtra("contactList", (ArrayList<? extends Parcelable>) contactList);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+
 
     }
 
@@ -201,13 +207,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void isComplete(boolean check) {
         if(check) {
             DatabaseManager dc = new DatabaseManager();
-            contactList = dc.getAllContacts();
+            dc.getAllContacts();
+            Log.v("DATOS", "Este si");
+        } else {
+            Log.v("DATOS", "error en isComplete");
         }
 
     }
 
     @Override
-    public void isContactImportComplete(boolean check) {
-        updateWithUserData();
+    public void isContactImportComplete(List<Contact> contactList) {
+        this.updateWithUserData(contactList);
+    }
+
+    public Context getMainActivityContext() {
+        return this.getBaseContext();
     }
 }
