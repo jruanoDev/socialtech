@@ -15,7 +15,8 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@android:id/list"
+        android:id="@+id/contactList"
+        android:divider="@color/white"
         android:layout_below="@id/contactListToolbar"/>
     
     <android.support.design.widget.FloatingActionButton

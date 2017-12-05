@@ -1,36 +1,67 @@
 package com.github.jruanodev.socialtech;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.icu.text.AlphabeticIndex;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.github.jruanodev.socialtech.dao.Contact;
 
 import java.util.List;
+import java.util.Locale;
 
-import butterknife.ButterKnife;
+public class ContactListAdapter extends BaseAdapter {
+    List<Contact> contactList;
+    Context context;
 
-public class ContactListAdapter extends ArrayAdapter<Contact> {
+    String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+            "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
-    public ContactListAdapter(@NonNull Context context, List<Contact> contactList) {
-        super(context, 0, contactList);
+    private TextView indexLetter;
+    private TextView contactName;
+
+
+    public ContactListAdapter(Context context, List<Contact> contactList) {
+        this.contactList = contactList;
+        this.context = context;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if(convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contactlist_adapter,
-                    parent, false);
+    public int getCount() {
+        return contactList.size();
+    }
 
-        ButterKnife.bind(convertView);
+    @Override
+    public Contact getItem(int position) {
+        return contactList.get(position);
+    }
 
+    @Override
+    public long getItemId(int i) {
+        return 0;
+    }
 
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        if(view == null)
+            view = LayoutInflater.from(context).inflate(R.layout.contactlist_adapter, viewGroup, false);
 
-        return convertView;
+            indexLetter = view.findViewById(R.id.indexLetter);
+            contactName = view.findViewById(R.id.contactName);
+
+            contactName.setText(getItem(i).getName());
+
+        return view;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence[] getAutofillOptions() {
+        return new CharSequence[0];
     }
 }

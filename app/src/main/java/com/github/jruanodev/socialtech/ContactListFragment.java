@@ -26,11 +26,8 @@ import butterknife.ButterKnife;
 public class ContactListFragment extends Fragment {
     View inflatedView;
     List<Contact> contactList;
-    String[] letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-            "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
-    @BindView(R.id.contactListToolbar)
-    Toolbar toolbar;
+    @BindView(R.id.contactListToolbar) Toolbar toolbar;
 
     @Nullable
     @Override
@@ -49,32 +46,17 @@ public class ContactListFragment extends Fragment {
         toolbar.setNavigationIcon(R.drawable.menu_icon);
         toolbar.inflateMenu(R.menu.contactlist_menu);
 
-        AlphabeticIndex<String> index = new AlphabeticIndex<String>(Locale.ENGLISH);
+        ContactListAdapter cAdapter = new ContactListAdapter(getContext(), contactList);
+        ListView listView = inflatedView.findViewById(R.id.contactList);
 
-        int counter = 0;
+        cAdapter.
 
-        for(Contact contact : contactList) {
-            index.addRecord(contact.getName(), letters[counter++]);
-        }
-
-        for(AlphabeticIndex.Bucket<String> bucket : index) {
-            Log.v("INDICE" , "" + bucket.getLabel());
-
-            for(AlphabeticIndex.Record<String> record : bucket) {
-                Log.v("CONTENIDO", "" + record.getName());
-            }
-        }
-
-        /*TODO
-            REPASAR TODO SOBRE MENUS Y TOOLBAR
-        */
+        listView.setAdapter(cAdapter);
 
         return inflatedView;
     }
 
     public void sortContactList() {
-
-
         contactList.sort(new Comparator<Contact>() {
             @Override
             public int compare(Contact o1, Contact o2) {
