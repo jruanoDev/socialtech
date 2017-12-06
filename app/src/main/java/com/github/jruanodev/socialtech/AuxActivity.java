@@ -3,6 +3,7 @@ package com.github.jruanodev.socialtech;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuxActivity extends AppCompatActivity {
+    FragmentManager fm;
+    FragmentTransaction ft;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,8 +31,8 @@ public class AuxActivity extends AppCompatActivity {
 
         f1.setArguments(fragmentArguments);
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
 
         ft.replace(R.id.fragmentContainer, f1).commit();
 

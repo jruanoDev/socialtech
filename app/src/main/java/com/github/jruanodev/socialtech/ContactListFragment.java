@@ -3,19 +3,18 @@ package com.github.jruanodev.socialtech;
 import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.view.menu.MenuBuilder;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.github.jruanodev.socialtech.dao.Contact;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +27,7 @@ public class ContactListFragment extends Fragment {
     List<Contact> contactList;
 
     @BindView(R.id.contactListToolbar) Toolbar toolbar;
+    @BindView(R.id.contactListFab) FloatingActionButton fab;
 
     @Nullable
     @Override
@@ -46,12 +46,43 @@ public class ContactListFragment extends Fragment {
         toolbar.setNavigationIcon(R.drawable.menu_icon);
         toolbar.inflateMenu(R.menu.contactlist_menu);
 
-        ContactListAdapter cAdapter = new ContactListAdapter(getContext(), contactList);
+        ContactListAdapter cAdapter = new ContactListAdapter(getContext());
         ListView listView = inflatedView.findViewById(R.id.contactList);
 
-        cAdapter.
+        AlphabeticIndex<String> index = new AlphabeticIndex<String>(Locale.ENGLISH);
+
+        for(Contact contact : contactList) {
+            index.addRecord(contact.getName(), String.valueOf(contactList.indexOf(contact)));
+        }
+
+        for(AlphabeticIndex.Bucket<String> bucket : index) {
+
+            String bucketLabel = bucket.getLabel();
+
+            if(bucket.size() != 0) {
+                boolean indexed = false;
+                for(AlphabeticIndex.Record<String> record : bucket) {
+                    if(!indexed) {
+                        cAdapter.addIndexedRow(contactList.get(Integer.parseInt(record.getData())), bucketLabel);
+                        indexed = true;
+                    } else {
+                        cAdapter.addUnindexedRow(contactList.get(Integer.parseInt(record.getData())));
+                    }
+                }
+            }
+        }
 
         listView.setAdapter(cAdapter);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+                ft.replace(R.id.fragmentContainer, new FormFragment()).commit();
+            }
+        });
 
         return inflatedView;
     }
@@ -63,7 +94,5 @@ public class ContactListFragment extends Fragment {
                return o1.getName().compareTo(o2.getName());
             }
         });
-
-        Log.v("LISTA ORDENADA", "" + contactList.toString());
     }
 }

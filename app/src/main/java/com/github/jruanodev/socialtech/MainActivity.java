@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 FragmentTransaction ft = fm.beginTransaction();
 
                 CreateUserFragment c1 = new CreateUserFragment();
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                ft.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
                 ft.addToBackStack("MainActivity");
                 ft.replace(android.R.id.content, c1).commit();
 
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void btnCloseClick(Fragment f) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        ft.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
         ft.remove(f).commit();
     }
 

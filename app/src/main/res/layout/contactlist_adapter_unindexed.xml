@@ -7,9 +7,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="72dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -25,12 +25,13 @@
                 android:textColor="@color/colorAccent"
                 android:layout_marginTop="10dp"/>
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/contactImage"
+            android:id="@+id/contactImageUnindexed"
+            android:layout_marginLeft="72dp"
             android:src="@drawable/person"
             android:layout_marginTop="7dp"
             android:layout_toRightOf="@id/indexLetterContainer"/>
@@ -39,10 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Contacto"
-            android:layout_toRightOf="@id/contactImage"
+            android:layout_toRightOf="@id/contactImageUnindexed"
             android:textColor="#000000"
             android:textSize="18dp"
-            android:id="@+id/contactName"
+            android:id="@+id/contactNameUnindexed"
             android:layout_marginTop="6dp"
             android:layout_marginLeft="10dp"/>
 
@@ -50,9 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="contacto@contacto.com"
-            android:layout_below="@id/contactName"
-            android:layout_toRightOf="@id/contactImage"
-            android:id="@+id/contactEmail"
+            android:layout_below="@id/contactNameUnindexed"
+            android:layout_toRightOf="@id/contactImageUnindexed"
+            android:id="@+id/contactEmailUnindexed"
             android:layout_marginLeft="10dp"
             android:textColor="#9f9f9f"
             android:textSize="12dp"/>
