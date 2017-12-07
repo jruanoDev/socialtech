@@ -2,8 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="10dp">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,6 +32,7 @@
             android:id="@+id/contactImageIndexed"
             android:src="@drawable/person"
             android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
             android:layout_toRightOf="@id/indexLetterContainer"/>
 
         <TextView

@@ -3,9 +3,11 @@ package com.github.jruanodev.socialtech;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import com.github.jruanodev.socialtech.dao.Contact;
@@ -34,8 +36,10 @@ public class AuxActivity extends AppCompatActivity {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
 
-        ft.replace(R.id.fragmentContainer, f1).commit();
+        f1.setDrawerLayout((DrawerLayout) findViewById(R.id.drawer_layout));
+        f1.setNavigationView((NavigationView) findViewById(R.id.drawer_navview));
 
+        ft.replace(R.id.fragmentContainer, f1).commit();
 
     }
 }

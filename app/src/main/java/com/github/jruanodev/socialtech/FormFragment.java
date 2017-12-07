@@ -1,8 +1,10 @@
 package com.github.jruanodev.socialtech;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -118,7 +121,7 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
                     Log.v("CONTACTO", contact.toString());
 
                     DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
-                    d.getCurrentUserDatabaseKey();
+                    d.getCurrentUserDatabaseKey("FormFragment");
 
                 }
 
@@ -184,7 +187,24 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
     }
 
     @Override
-    public void isContactImportComplete(List<Contact> contactList) {
+    public void isContactCreated(boolean check) {
+        if(check) {
+            d.getAllContacts("FormFragment");
+        }
 
+    }
+
+    @Override
+    public void isContactImportComplete(List<Contact> contactList) {
+        ContactListFragment f1 = new ContactListFragment();
+
+        Bundle fragmentArguments = new Bundle();
+        fragmentArguments.putParcelableArrayList("contactList", (ArrayList<? extends Parcelable>) contactList);
+
+        f1.setArguments(fragmentArguments);
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        ft.replace(R.id.fragmentContainer, f1).commit();
     }
 }

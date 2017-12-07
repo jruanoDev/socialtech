@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/contact_view"
+            android:title="Contactos"
+            android:icon="@drawable/person_navview"/>
+
+        <item
+            android:id="@+id/business_view"
+            android:title="Empresas"
+            android:icon="@drawable/business_navview"/>
+    </group>
+
+    <item
+        android:id="@+id/navview_subheader"
+        android:title="Otras opciones">
+
+        <menu>
+
+            <item
+                android:id="@+id/log_out"
+                android:title="Desconectarse"
+                android:icon="@drawable/logout"/>
+
+        </menu>
+
+    </item>
+
+</menu>

@@ -42,6 +42,8 @@ public class DatabaseManager {
     }
 
     public void createContact() {
+        createContactCheck = FormFragment._instance;
+
         userDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -54,10 +56,14 @@ public class DatabaseManager {
 
             }
         });
+
+        createContactCheck.isContactCreated(true);
     }
 
-    public void getAllContacts() {
+    public void getAllContacts(final String callKey) {
         taskCheck = MainActivity._instance;
+        createContactCheck = FormFragment._instance;
+
         final List<Contact> contactList = new ArrayList<>();
 
         userDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,7 +83,13 @@ public class DatabaseManager {
                         }
 
                         Log.v("LISTA", "" + contactList);
-                        taskCheck.isContactImportComplete(contactList);
+
+                        if(callKey.equals("MainActivity")) {
+                            taskCheck.isContactImportComplete(contactList);
+                        } else if(callKey.equals("FormFragment")) {
+                            createContactCheck.isContactImportComplete(contactList);
+                        }
+
 
                     }
 
@@ -95,7 +107,7 @@ public class DatabaseManager {
         });
     }
 
-    public void getCurrentUserDatabaseKey() {
+    public void getCurrentUserDatabaseKey(final String callType) {
         taskCheck = MainActivity._instance;
         createContactCheck = FormFragment._instance;
 
@@ -117,8 +129,14 @@ public class DatabaseManager {
 
                                     if(data != null && data.equals(user.getUid())) {
                                         userDatabaseReference = snapshot1.getRef().getParent();
-                                        taskCheck.isComplete(true);
-                                        createContactCheck.isComplete(true);
+
+                                        if(callType.equals("MainActivity")) {
+                                            taskCheck.isComplete(true);
+
+                                        } else if(callType.equals("FormFragment")) {
+                                            createContactCheck.isComplete(true);
+                                        }
+
                                         Log.v("DATOS", "SE HA PASADO POR AQUI " + userDatabaseReference.toString());
                                     }
                                 }
@@ -144,6 +162,7 @@ public class DatabaseManager {
 
     public interface onTaskCompleteListener {
         public void isComplete(boolean check);
+        public void isContactCreated(boolean check);
         public void isContactImportComplete(List<Contact> contactList);
     }
 

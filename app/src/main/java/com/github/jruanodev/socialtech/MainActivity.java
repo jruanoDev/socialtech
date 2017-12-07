@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.title) TextView title;
     Typeface typeface;
 
+    private FirebaseAuth.AuthStateListener authStateListener;
+
     @BindView(R.id.inputUsuario) EditText inputUsuario;
     @BindView(R.id.inputPassword) EditText inputPassword;
     @BindView(R.id.btnLogin) Button btnLogin;
@@ -77,9 +79,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(mAuth.getCurrentUser() != null) {
             Log.v("AUTENTIFICACION", "CONECTADO");
+            Log.v("AUTENTIFICACIÓN", "UID " + mAuth.getCurrentUser().getUid());
         } else {
             Log.v("AUTENTIFICACION", "DESCONECTADO");
         }
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                Log.v("CAMBIO DE USUARIO", "" + firebaseAuth.getCurrentUser().getEmail());
+            }
+        };
 
         AssetManager am = getApplicationContext().getAssets();
         typeface = Typeface.createFromAsset(getAssets(), "fonts/BreeSerif-Regular.ttf");
@@ -166,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(task.isSuccessful()) {
                         DatabaseManager db = new DatabaseManager();
                         DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
-                        db.getCurrentUserDatabaseKey();
+                        db.getCurrentUserDatabaseKey("MainActivity");
 
                     } else {
                         pDialog.dismiss();
@@ -218,17 +229,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void isComplete(boolean check) {
         if(check) {
             DatabaseManager dc = new DatabaseManager();
-            dc.getAllContacts();
+            dc.getAllContacts("MainActivity");
         }
+
+    }
+
+    @Override
+    public void isContactCreated(boolean check) {
 
     }
 
     @Override
     public void isContactImportComplete(List<Contact> contactList) {
         this.updateWithUserData(contactList);
-    }
-
-    public Context getMainActivityContext() {
-        return this.getBaseContext();
     }
 }

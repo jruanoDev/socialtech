@@ -1,23 +1,25 @@
 package com.github.jruanodev.socialtech;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.github.jruanodev.socialtech.dao.Contact;
 
@@ -36,6 +38,8 @@ public class ContactListFragment extends Fragment {
 
     @BindView(R.id.contactListToolbar) Toolbar toolbar;
     @BindView(R.id.contactListFab) FloatingActionButton fab;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
 
     @Nullable
     @Override
@@ -43,6 +47,12 @@ public class ContactListFragment extends Fragment {
         inflatedView = inflater.inflate(R.layout.fragment_contactlist, container, false);
 
         ButterKnife.bind(this, inflatedView);
+
+        if(drawerLayout == null)
+            Log.v("ES NULO", "ES NULO");
+
+        if(navigationView == null)
+            Log.v("ES NULO NAVVIEW", "ES NULO EL NAVVIEW");
 
         Bundle fragmentArguments = this.getArguments();
         contactList = fragmentArguments.getParcelableArrayList("contactList");
@@ -55,7 +65,6 @@ public class ContactListFragment extends Fragment {
         toolbar.setTitle("Contactos");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.menu_icon);
-        toolbar.inflateMenu(R.menu.contactlist_menu);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +76,42 @@ public class ContactListFragment extends Fragment {
             }
         });
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //drawerLayout.openDrawer(GravityCompat.START);
+                Toast.makeText(getContext(), "PULSADO MENU", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return inflatedView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.contact_view:
+                        Toast.makeText(getContext(), "PULSADO CONTACTOS", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.business_view:
+                        Toast.makeText(getContext(), "PULSADO EMPRESAS", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.log_out:
+                        Toast.makeText(getContext(), "PULSADO DESCONECTARSE", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
     }
 
     public void sortContactList() {
@@ -107,5 +151,13 @@ public class ContactListFragment extends Fragment {
         }
 
         listView.setAdapter(cAdapter);
+    }
+
+    public void setDrawerLayout(DrawerLayout drawerLayout) {
+        this.drawerLayout = drawerLayout;
+    }
+
+    public void setNavigationView(NavigationView navigationView) {
+        this.navigationView = navigationView;
     }
 }
