@@ -23,13 +23,17 @@ import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FormFragment extends Fragment implements View.OnClickListener {
+public class FormFragment extends Fragment implements View.OnClickListener, DatabaseManager.onTaskCompleteListener {
     View inflatedView;
+    Contact contact;
+    DatabaseManager d;
+    public static FormFragment _instance;
 
     @BindView(R.id.backArrow) ImageView btnBack;
     @BindView(R.id.iNombre) EditText inputName;
@@ -51,6 +55,7 @@ public class FormFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         inflatedView = inflater.inflate(R.layout.fragment_form, container, false);
         ButterKnife.bind(this, inflatedView);
+        _instance = this;
 
         resetAllInputs();
 
@@ -108,12 +113,13 @@ public class FormFragment extends Fragment implements View.OnClickListener {
 
                     formation = fTextView.getText().toString();
 
-                    Contact contact = new Contact(name, phone, email, edad, sexo, formation);
+                    contact = new Contact(name, phone, email, edad, sexo, formation);
+                    d = new DatabaseManager(contact);
                     Log.v("CONTACTO", contact.toString());
-                    DatabaseManager d = new DatabaseManager(contact);
+
                     DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
-                    d.createContact();
                     d.getCurrentUserDatabaseKey();
+
                 }
 
                 break;
@@ -168,5 +174,17 @@ public class FormFragment extends Fragment implements View.OnClickListener {
         ageCounter.setText("0");
         fTextView.setText("");
         sEdad.setProgress(0);
+    }
+
+    @Override
+    public void isComplete(boolean check) {
+        if(check)
+            d.createContact();
+
+    }
+
+    @Override
+    public void isContactImportComplete(List<Contact> contactList) {
+
     }
 }

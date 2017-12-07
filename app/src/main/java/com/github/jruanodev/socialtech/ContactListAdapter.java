@@ -1,9 +1,6 @@
 package com.github.jruanodev.socialtech;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +16,7 @@ import java.util.TreeSet;
 
 public class ContactListAdapter extends BaseAdapter {
     List<Contact> contactList = new ArrayList<>();
+    List<Contact> filteredContactList = new ArrayList<>();
     TreeSet indexSet = new TreeSet();
     Context context;
 
@@ -53,21 +51,21 @@ public class ContactListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.v("POSITION", "LA POSITION ES " + position);
         return indexSet.contains(position) ? TYPE_INDEXED : TYPE_UNINDEXED;
     }
 
     public void addUnindexedRow(Contact contact) {
+        filteredContactList.add(contact);
         contactList.add(contact);
         notifyDataSetChanged();
     }
 
     public void addIndexedRow(Contact contact, String index) {
         contactList.add(contact);
+        filteredContactList.add(contact);
 
         uiIndex = index;
         indexSet.add(contactList.size() - 1);
-        Log.v("SIZE", "EL SIZE DEL TREESET ES " + contactList.size());
         notifyDataSetChanged();
     }
 
@@ -78,7 +76,6 @@ public class ContactListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         int type = getItemViewType(i);
-        Log.v("TIPO", "" + type);
 
         if(view == null) {
             switch (type) {
@@ -88,7 +85,7 @@ public class ContactListAdapter extends BaseAdapter {
                     contactName = view.findViewById(R.id.contactNameIndexed);
                     contactEmail = view.findViewById(R.id.contactEmailIndexed);
                     String letra = "" + getItem(i).getName().charAt(0);
-                    indexLetter.setText("" + letra.toUpperCase(Locale.ENGLISH));
+                    indexLetter.setText(letra.toUpperCase(Locale.ENGLISH));
                     break;
 
                 case TYPE_UNINDEXED:
@@ -104,11 +101,5 @@ public class ContactListAdapter extends BaseAdapter {
 
 
         return view;
-    }
-
-    @Nullable
-    @Override
-    public CharSequence[] getAutofillOptions() {
-        return new CharSequence[0];
     }
 }

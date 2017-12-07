@@ -6,6 +6,7 @@
         android:title="Buscar"
         android:id="@+id/busqueda"
         android:icon="@drawable/search"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="android.widget.SearchView"></item>
 
 </menu>

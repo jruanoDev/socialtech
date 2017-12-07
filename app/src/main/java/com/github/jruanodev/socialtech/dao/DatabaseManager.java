@@ -2,6 +2,7 @@ package com.github.jruanodev.socialtech.dao;
 
 import android.util.Log;
 
+import com.github.jruanodev.socialtech.FormFragment;
 import com.github.jruanodev.socialtech.MainActivity;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class DatabaseManager {
     onTaskCompleteListener taskCheck;
+    onTaskCompleteListener createContactCheck;
     private Contact contact;
     public static FirebaseUser user;
     private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("/users");
@@ -95,6 +97,7 @@ public class DatabaseManager {
 
     public void getCurrentUserDatabaseKey() {
         taskCheck = MainActivity._instance;
+        createContactCheck = FormFragment._instance;
 
         FirebaseDatabase.getInstance().getReference("/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -115,6 +118,7 @@ public class DatabaseManager {
                                     if(data != null && data.equals(user.getUid())) {
                                         userDatabaseReference = snapshot1.getRef().getParent();
                                         taskCheck.isComplete(true);
+                                        createContactCheck.isComplete(true);
                                         Log.v("DATOS", "SE HA PASADO POR AQUI " + userDatabaseReference.toString());
                                     }
                                 }

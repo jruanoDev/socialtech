@@ -1,5 +1,6 @@
 package com.github.jruanodev.socialtech;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -21,6 +22,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.github.jruanodev.socialtech.dao.User;
@@ -148,18 +151,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void loginWithUserAndPass(String username, String password) {
+        final MaterialDialog.Builder pBuilder = new MaterialDialog.Builder(this);
+        pBuilder.content("Iniciando sesión");
+        pBuilder.progress(true, 0);
+        pBuilder.theme(Theme.LIGHT);
+
+        final MaterialDialog pDialog = pBuilder.build();
+        pDialog.show();
+
         mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this,
             new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()) {
-                        Toast.makeText(getBaseContext(), "Login correcto", Toast.LENGTH_SHORT).show();
                         DatabaseManager db = new DatabaseManager();
                         DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
                         db.getCurrentUserDatabaseKey();
 
                     } else {
-                        Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT);
+                        pDialog.dismiss();
+                        Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -208,9 +219,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(check) {
             DatabaseManager dc = new DatabaseManager();
             dc.getAllContacts();
-            Log.v("DATOS", "Este si");
-        } else {
-            Log.v("DATOS", "error en isComplete");
         }
 
     }
