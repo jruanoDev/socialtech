@@ -99,7 +99,6 @@ public class ContactListAdapter extends BaseAdapter {
             contactEmail.setText(getItem(i).getEmail());
         }
 
-
         return view;
     }
 }

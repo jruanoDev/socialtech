@@ -1,8 +1,10 @@
 package com.github.jruanodev.socialtech;
 
 import android.content.Context;
+import android.content.Intent;
 import android.icu.text.AlphabeticIndex;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,24 +38,32 @@ public class ContactListFragment extends Fragment {
     View inflatedView;
     List<Contact> contactList = new ArrayList<>();
     ContactListAdapter cAdapter;
-
-    @BindView(R.id.contactListToolbar) Toolbar toolbar;
-    @BindView(R.id.contactListFab) FloatingActionButton fab;
     DrawerLayout drawerLayout;
-    NavigationView navigationView;
+
+    @BindView(R.id.contactListFab) FloatingActionButton fab;
+    @BindView(R.id.contactList) ListView listView;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        inflatedView = inflater.inflate(R.layout.fragment_contactlist, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
+        inflatedView = inflater.inflate(R.layout.fragment_contactlist, container, false);
         ButterKnife.bind(this, inflatedView);
 
-        if(drawerLayout == null)
-            Log.v("ES NULO", "ES NULO");
+        Toolbar toolbar = getActivity().findViewById(R.id.aux_toolbar);
+        toolbar.setTitle("Contactos");
+        toolbar.setNavigationIcon(R.drawable.menu_icon);
 
-        if(navigationView == null)
-            Log.v("ES NULO NAVVIEW", "ES NULO EL NAVVIEW");
+        drawerLayout = getActivity().findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         Bundle fragmentArguments = this.getArguments();
         contactList = fragmentArguments.getParcelableArrayList("contactList");
@@ -62,56 +73,35 @@ public class ContactListFragment extends Fragment {
             populateListView();
         }
 
-        toolbar.setTitle("Contactos");
-        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-        toolbar.setNavigationIcon(R.drawable.menu_icon);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-                ft.replace(R.id.fragmentContainer, new FormFragment()).commit();
+
+                FormFragment formFragment = new FormFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("contactList", (ArrayList<? extends Parcelable>) contactList);
+                formFragment.setArguments(bundle);
+                ft.replace(R.id.fragmentContainer, formFragment).commit();
             }
         });
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                //drawerLayout.openDrawer(GravityCompat.START);
-                Toast.makeText(getContext(), "PULSADO MENU", Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ContactDetailActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("selectedContact", contactList.get(position));
+
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
         return inflatedView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.contact_view:
-                        Toast.makeText(getContext(), "PULSADO CONTACTOS", Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.business_view:
-                        Toast.makeText(getContext(), "PULSADO EMPRESAS", Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.log_out:
-                        Toast.makeText(getContext(), "PULSADO DESCONECTARSE", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-
-                drawerLayout.closeDrawers();
-                return true;
-            }
-        });
     }
 
     public void sortContactList() {
@@ -125,7 +115,6 @@ public class ContactListFragment extends Fragment {
 
     public void populateListView() {
         cAdapter = new ContactListAdapter(getContext());
-        ListView listView = inflatedView.findViewById(R.id.contactList);
 
         AlphabeticIndex<String> index = new AlphabeticIndex<String>(Locale.ENGLISH);
 
@@ -151,13 +140,5 @@ public class ContactListFragment extends Fragment {
         }
 
         listView.setAdapter(cAdapter);
-    }
-
-    public void setDrawerLayout(DrawerLayout drawerLayout) {
-        this.drawerLayout = drawerLayout;
-    }
-
-    public void setNavigationView(NavigationView navigationView) {
-        this.navigationView = navigationView;
     }
 }

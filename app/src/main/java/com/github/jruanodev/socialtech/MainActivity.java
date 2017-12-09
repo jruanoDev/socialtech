@@ -22,8 +22,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.github.jruanodev.socialtech.dao.User;
@@ -162,13 +160,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void loginWithUserAndPass(String username, String password) {
-        final MaterialDialog.Builder pBuilder = new MaterialDialog.Builder(this);
-        pBuilder.content("Iniciando sesión");
-        pBuilder.progress(true, 0);
-        pBuilder.theme(Theme.LIGHT);
-
-        final MaterialDialog pDialog = pBuilder.build();
-        pDialog.show();
 
         mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this,
             new OnCompleteListener<AuthResult>() {
@@ -180,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         db.getCurrentUserDatabaseKey("MainActivity");
 
                     } else {
-                        pDialog.dismiss();
                         Snackbar.make(view, "Usuario o contraseña incorrectos.", Snackbar.LENGTH_SHORT).show();
                     }
                 }
@@ -216,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateWithUserData(List<Contact> contactList) {
-            Intent intent = new Intent(_instance, AuxActivity.class);
+            Intent intent = new Intent(MainActivity.this, AuxActivity.class);
             intent.putParcelableArrayListExtra("contactList", (ArrayList<? extends Parcelable>) contactList);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP);

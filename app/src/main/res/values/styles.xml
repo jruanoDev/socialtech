@@ -8,23 +8,29 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
 
-        <item name="colorControlNormal">#d0ffffff</item>
-        <item name="colorControlActivated">#FFFFFF</item>
-        <item name="android:textColorHint">#d0ffffff</item>
-        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlActivated">@color/colorControlActivated</item>
+        <item name="android:textColorHint">@color/textColorHint</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryMain</item>
     </style>
 
     <style name="FormStyle" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#e040fb</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
 
-        <item name="android:textColorPrimary">#616161</item>
-        <item name="colorControlNormal">#d0d6d6d6</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryAux</item>
+        <item name="colorControlNormal">@color/colorControlNormalAux</item>
 
+    </style>
+
+    <style name="DetailTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
     </style>
 
 </resources>

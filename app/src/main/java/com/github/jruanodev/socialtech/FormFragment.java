@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +41,6 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
     DatabaseManager d;
     public static FormFragment _instance;
 
-    @BindView(R.id.backArrow) ImageView btnBack;
     @BindView(R.id.iNombre) EditText inputName;
     @BindView(R.id.iTelefono) EditText inputTelefono;
     @BindView(R.id.iEmail) EditText inputEmail;
@@ -61,6 +63,28 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
         _instance = this;
 
         resetAllInputs();
+
+        final Toolbar toolbar = getActivity().findViewById(R.id.aux_toolbar);
+        toolbar.setTitle("Añadir contacto");
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = getArguments();
+                ContactListFragment contactListFragment = new ContactListFragment();
+                contactListFragment.setArguments(bundle);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
+                ft.replace(R.id.fragmentContainer, contactListFragment).commit();
+
+                toolbar.setNavigationOnClickListener(null);
+            }
+        });
+
+        DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, PROFESIONES);
