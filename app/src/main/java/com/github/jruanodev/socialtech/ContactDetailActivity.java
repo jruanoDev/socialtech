@@ -3,7 +3,7 @@ package com.github.jruanodev.socialtech;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +12,7 @@ import com.github.jruanodev.socialtech.dao.Contact;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContactDetailActivity extends AppCompatActivity {
+public class ContactDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.contactDetail_backarrow) ImageView backArrow;
     @BindView(R.id.contactDetailName) TextView contactDetailName;
@@ -43,5 +43,16 @@ public class ContactDetailActivity extends AppCompatActivity {
         else
             contactDetailFormation.setText(contact.getFormation());
 
+        backArrow.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.contactDetail_backarrow:
+                finish();
+                break;
+        }
     }
 }

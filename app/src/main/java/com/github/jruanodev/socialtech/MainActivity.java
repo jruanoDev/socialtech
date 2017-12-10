@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jruanodev.socialtech.dao.Business;
 import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.github.jruanodev.socialtech.dao.User;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.mainContent) View view;
 
     FirebaseAuth mAuth;
+    List<Contact> contactList = new ArrayList<>();
+    List<Business> businessList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,13 +208,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
-    public void updateWithUserData(List<Contact> contactList) {
+    public void updateWithUserData() {
             Intent intent = new Intent(MainActivity.this, AuxActivity.class);
             intent.putParcelableArrayListExtra("contactList", (ArrayList<? extends Parcelable>) contactList);
+            intent.putParcelableArrayListExtra("businessList", (ArrayList<? extends Parcelable>) businessList);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-
 
     }
 
@@ -231,6 +234,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void isContactImportComplete(List<Contact> contactList) {
-        this.updateWithUserData(contactList);
+        this.contactList = contactList;
+        DatabaseManager d = new DatabaseManager();
+        d.getAllBusinesses("MainActivity");
+    }
+
+    @Override
+    public void isBusinessImportComplete(List<Business> businessList) {
+        this.businessList = businessList;
+        this.updateWithUserData();
     }
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/indexLetterContainer">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A"
+                android:layout_gravity="center"
+                android:textSize="24dp"
+                android:id="@+id/indexLetterBusiness"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/businessImageIndexed"
+            android:src="@drawable/person"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:layout_toRightOf="@id/indexLetterContainer"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contacto"
+            android:layout_toRightOf="@id/businessImageIndexed"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:id="@+id/businessNameIndexed"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="contacto@contacto.com"
+            android:layout_below="@id/businessNameIndexed"
+            android:layout_toRightOf="@id/businessImageIndexed"
+            android:id="@+id/businessEmailIndexed"
+            android:layout_marginLeft="10dp"
+            android:textColor="#9f9f9f"
+            android:textSize="12dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

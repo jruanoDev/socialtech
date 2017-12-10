@@ -24,6 +24,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jruanodev.socialtech.dao.Business;
 import com.github.jruanodev.socialtech.dao.Contact;
 import com.github.jruanodev.socialtech.dao.DatabaseManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -230,5 +231,10 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         ft.replace(R.id.fragmentContainer, f1).commit();
+    }
+
+    @Override
+    public void isBusinessImportComplete(List<Business> businessList) {
+
     }
 }

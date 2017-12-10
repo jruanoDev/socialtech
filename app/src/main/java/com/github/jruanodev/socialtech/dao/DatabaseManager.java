@@ -107,6 +107,54 @@ public class DatabaseManager {
         });
     }
 
+    public void getAllBusinesses(final String callKey) {
+        taskCheck = MainActivity._instance;
+        createContactCheck = FormFragment._instance;
+
+        final List<Business> businessList = new ArrayList<>();
+
+        userDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DatabaseReference dr = dataSnapshot.getRef().child("empresas");
+                dr.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        HashMap<String, Object> data = (HashMap<String, Object>) dataSnapshot.getValue();
+                        for(String key : data.keySet()) {
+                            HashMap<String, String> businessData = (HashMap<String, String>) data.get(key);
+                            Log.v("EMPRESA", "" + businessData.get("name"));
+                            businessList.add(new Business(businessData.get("name"),
+                                    businessData.get("email"), businessData.get("phone"),
+                                    businessData.get("address"), businessData.get("city"),
+                                    businessData.get("country"), businessData.get("info")));
+                        }
+
+                        Log.v("LISTA", "" + businessList);
+
+                        if(callKey.equals("MainActivity")) {
+                            taskCheck.isBusinessImportComplete(businessList);
+                        } else if(callKey.equals("FormFragment")) {
+                            createContactCheck.isBusinessImportComplete(businessList);
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void getCurrentUserDatabaseKey(final String callType) {
         taskCheck = MainActivity._instance;
         createContactCheck = FormFragment._instance;
@@ -164,6 +212,7 @@ public class DatabaseManager {
         public void isComplete(boolean check);
         public void isContactCreated(boolean check);
         public void isContactImportComplete(List<Contact> contactList);
+        public void isBusinessImportComplete(List<Business> businessList);
     }
 
 }

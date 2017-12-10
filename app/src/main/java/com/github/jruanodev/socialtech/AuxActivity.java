@@ -16,12 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.jruanodev.socialtech.dao.Business;
 import com.github.jruanodev.socialtech.dao.Contact;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AuxActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    List<Business> businessList = new ArrayList<>();
+    List<Contact> contactList = new ArrayList<>();
+    DrawerLayout drawerLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +37,7 @@ public class AuxActivity extends AppCompatActivity implements NavigationView.OnN
         toolbar.setNavigationIcon(R.drawable.menu_icon);
         setSupportActionBar(toolbar);
 
-        final DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,9 +47,11 @@ public class AuxActivity extends AppCompatActivity implements NavigationView.OnN
         });
 
         NavigationView navigationView = findViewById(R.id.drawer_navview);
+        navigationView.setCheckedItem(R.id.contact_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        List<Contact> contactList = getIntent().getParcelableArrayListExtra("contactList");
+        contactList = getIntent().getParcelableArrayListExtra("contactList");
+        businessList = getIntent().getParcelableArrayListExtra("businessList");
 
         ContactListFragment f1 = new ContactListFragment();
 
@@ -70,7 +76,17 @@ public class AuxActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
 
             case R.id.business_view:
-                Toast.makeText(getBaseContext(), "TOCADO EMPRESAS", Toast.LENGTH_SHORT).show();
+                BusinessListFragment b = new BusinessListFragment();
+                Bundle bArguments = new Bundle();
+                bArguments.putParcelableArrayList("businessList", (ArrayList<? extends Parcelable>) businessList);
+
+                b.setArguments(bArguments);
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.addToBackStack("businessListFragment");
+                ft.replace(R.id.fragmentContainer, b).commit();
+
+                drawerLayout.closeDrawers();
                 break;
 
             case R.id.log_out:
