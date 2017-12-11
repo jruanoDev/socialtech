@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
@@ -12,17 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.jruanodev.socialtech.dao.Business;
 import com.github.jruanodev.socialtech.dao.Contact;
@@ -36,49 +32,47 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FormFragment extends Fragment implements View.OnClickListener, DatabaseManager.onTaskCompleteListener {
+public class BusinessFormFragment extends Fragment implements View.OnClickListener, DatabaseManager.onTaskCompleteListener {
     View inflatedView;
-    Contact contact;
+    Business business;
     DatabaseManager d;
-    public static FormFragment _instance;
+    public static BusinessFormFragment _instance;
 
-    @BindView(R.id.iNombre) EditText inputName;
-    @BindView(R.id.iTelefono) EditText inputTelefono;
-    @BindView(R.id.iEmail) EditText inputEmail;
-    @BindView(R.id.sEdad) SeekBar sEdad;
-    @BindView(R.id.ageCounter) TextView ageCounter;
-    @BindView(R.id.sMasculino) RadioButton sMasculino;
-    @BindView(R.id.sFemenino) RadioButton sFemenino;
-    @BindView(R.id.formationTextView) MultiAutoCompleteTextView fTextView;
-    @BindView(R.id.btnSave) Button btnSave;
-    @BindView(R.id.btnReset) TextView btnReset;
-
-    private static final String[] PROFESIONES = new String[] {"SMR", "DAM", "DAW",
-            "ASIR", "Ingeniería Técnica Informática", "Grado", "Otros"};
+    @BindView(R.id.bNombre) EditText inputName;
+    @BindView(R.id.bTelefono) EditText inputTelefono;
+    @BindView(R.id.bEmail) EditText inputEmail;
+    @BindView(R.id.bAddress) EditText inputAddress;
+    @BindView(R.id.bCity) EditText inputCity;
+    @BindView(R.id.bCountry) EditText inputCountry;
+    @BindView(R.id.bInfo) EditText inputInfo;
+    @BindView(R.id.btnSaveB) Button btnSave;
+    @BindView(R.id.btnResetB) TextView btnReset;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        inflatedView = inflater.inflate(R.layout.fragment_form, container, false);
+        inflatedView = inflater.inflate(R.layout.fragment_businessform, container, false);
         ButterKnife.bind(this, inflatedView);
         _instance = this;
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         resetAllInputs();
 
         final Toolbar toolbar = getActivity().findViewById(R.id.aux_toolbar);
-        toolbar.setTitle("Añadir contacto");
+        toolbar.setTitle("Añadir empresa");
         toolbar.setNavigationIcon(R.drawable.back_arrow);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = getArguments();
-                ContactListFragment contactListFragment = new ContactListFragment();
-                contactListFragment.setArguments(bundle);
+                BusinessListFragment businessListFragment = new BusinessListFragment();
+                businessListFragment.setArguments(bundle);
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
-                ft.replace(R.id.fragmentContainer, contactListFragment).commit();
+                ft.replace(R.id.fragmentContainer, businessListFragment).commit();
 
                 toolbar.setNavigationOnClickListener(null);
             }
@@ -87,32 +81,8 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_dropdown_item_1line, PROFESIONES);
-
-        fTextView.setAdapter(adapter);
-        fTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
         btnSave.setOnClickListener(this);
         btnReset.setOnClickListener(this);
-        sMasculino.setChecked(true);
-
-        sEdad.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                ageCounter.setText("" + i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
         return inflatedView;
     }
@@ -125,28 +95,21 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
                 boolean b = checkPhone(inputTelefono.getText().toString());
                 boolean c = checkEmail(inputEmail.getText().toString());
 
-                String name, phone, email, sexo = "", formation;
-                int edad;
+                String name, phone, email, address, city, country, info;
 
                 if(a && b && c) {
                     name = inputName.getText().toString();
                     phone = inputTelefono.getText().toString();
                     email = inputEmail.getText().toString();
-                    edad = Integer.parseInt(ageCounter.getText().toString());
+                    address = inputAddress.getText().toString();
+                    city = inputCity.getText().toString();
+                    country = inputCountry.getText().toString();
+                    info = inputInfo.getText().toString();
 
-                    if(sMasculino.isChecked())
-                        sexo = "Masculino";
-                    else if(sFemenino.isChecked())
-                        sexo = "Femenino";
-
-                    formation = fTextView.getText().toString();
-
-                    contact = new Contact(name, phone, email, edad, sexo, formation);
-                    d = new DatabaseManager(contact);
-                    Log.v("CONTACTO", contact.toString());
+                    d = new DatabaseManager(business);
 
                     DatabaseManager.user = FirebaseAuth.getInstance().getCurrentUser();
-                    d.getCurrentUserDatabaseKey("FormFragment");
+                    d.getCurrentUserDatabaseKey("BusinessFormFragment");
 
                 }
 
@@ -199,47 +162,43 @@ public class FormFragment extends Fragment implements View.OnClickListener, Data
         inputName.setText("");
         inputEmail.setText("");
         inputTelefono.setText("");
-        ageCounter.setText("0");
-        fTextView.setText("");
-        sEdad.setProgress(0);
+        inputAddress.setText("");
+        inputCity.setText("");
+        inputCountry.setText("");
+        inputInfo.setText("");
     }
 
     @Override
     public void isComplete(boolean check) {
         if(check)
-            d.createContact();
+            d.createBusiness();
 
     }
 
     @Override
-    public void isContactCreated(boolean check) {
-        if(check) {
-            d.getAllContacts("FormFragment");
-        }
-
-    }
+    public void isContactCreated(boolean check) {}
 
     @Override
     public void isBusinessCreated(boolean check) {
-
+        if(check) {
+            d.getAllBusinesses("BusinessFormFragment");
+        }
     }
 
     @Override
-    public void isContactImportComplete(List<Contact> contactList) {
-        ContactListFragment f1 = new ContactListFragment();
+    public void isContactImportComplete(List<Contact> contactList) {}
+
+    @Override
+    public void isBusinessImportComplete(List<Business> businessList) {
+        BusinessListFragment f1 = new BusinessListFragment();
 
         Bundle fragmentArguments = new Bundle();
-        fragmentArguments.putParcelableArrayList("contactList", (ArrayList<? extends Parcelable>) contactList);
+        fragmentArguments.putParcelableArrayList("businessList", (ArrayList<? extends Parcelable>) businessList);
 
         f1.setArguments(fragmentArguments);
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         ft.replace(R.id.fragmentContainer, f1).commit();
-    }
-
-    @Override
-    public void isBusinessImportComplete(List<Business> businessList) {
-
     }
 }

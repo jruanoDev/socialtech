@@ -2,6 +2,7 @@ package com.github.jruanodev.socialtech.dao;
 
 import android.util.Log;
 
+import com.github.jruanodev.socialtech.BusinessFormFragment;
 import com.github.jruanodev.socialtech.FormFragment;
 import com.github.jruanodev.socialtech.MainActivity;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,7 +19,9 @@ import java.util.List;
 public class DatabaseManager {
     onTaskCompleteListener taskCheck;
     onTaskCompleteListener createContactCheck;
+    onTaskCompleteListener createBusinessCheck;
     private Contact contact;
+    private Business business;
     public static FirebaseUser user;
     private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("/users");
     public static DatabaseReference userDatabaseReference;
@@ -30,6 +33,7 @@ public class DatabaseManager {
     public DatabaseManager(Contact contact) {
         this.contact = contact;
     }
+    public DatabaseManager(Business business) {this.business = business;}
 
     public void createUserData() {
         HashMap<String, String> data = new HashMap<>();
@@ -60,9 +64,30 @@ public class DatabaseManager {
         createContactCheck.isContactCreated(true);
     }
 
+    public void createBusiness() {
+        createBusinessCheck = FormFragment._instance;
+
+        userDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DatabaseReference dr2 = dataSnapshot.getRef().child("empresas");
+                dr2.push().setValue(business.toMap());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        createBusinessCheck.isBusinessCreated(true);
+
+    }
+
     public void getAllContacts(final String callKey) {
         taskCheck = MainActivity._instance;
         createContactCheck = FormFragment._instance;
+        createBusinessCheck = BusinessFormFragment._instance;
 
         final List<Contact> contactList = new ArrayList<>();
 
@@ -90,7 +115,6 @@ public class DatabaseManager {
                             createContactCheck.isContactImportComplete(contactList);
                         }
 
-
                     }
 
                     @Override
@@ -108,9 +132,6 @@ public class DatabaseManager {
     }
 
     public void getAllBusinesses(final String callKey) {
-        taskCheck = MainActivity._instance;
-        createContactCheck = FormFragment._instance;
-
         final List<Business> businessList = new ArrayList<>();
 
         userDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -131,13 +152,16 @@ public class DatabaseManager {
                         }
 
                         Log.v("LISTA", "" + businessList);
-
                         if(callKey.equals("MainActivity")) {
+                            taskCheck = MainActivity._instance;
                             taskCheck.isBusinessImportComplete(businessList);
                         } else if(callKey.equals("FormFragment")) {
+                            createContactCheck = FormFragment._instance;
                             createContactCheck.isBusinessImportComplete(businessList);
+                        } else if(callKey.equals("BusinessFormFragment")) {
+                            createBusinessCheck = BusinessFormFragment._instance;
+                            createBusinessCheck.isBusinessImportComplete(businessList);
                         }
-
 
                     }
 
@@ -158,6 +182,7 @@ public class DatabaseManager {
     public void getCurrentUserDatabaseKey(final String callType) {
         taskCheck = MainActivity._instance;
         createContactCheck = FormFragment._instance;
+        createBusinessCheck = BusinessFormFragment._instance;
 
         FirebaseDatabase.getInstance().getReference("/").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -183,6 +208,10 @@ public class DatabaseManager {
 
                                         } else if(callType.equals("FormFragment")) {
                                             createContactCheck.isComplete(true);
+
+                                        } else if(callType.equals("BusinessFormFragment")) {
+                                            createBusinessCheck.isComplete(true);
+
                                         }
 
                                         Log.v("DATOS", "SE HA PASADO POR AQUI " + userDatabaseReference.toString());
@@ -211,6 +240,7 @@ public class DatabaseManager {
     public interface onTaskCompleteListener {
         public void isComplete(boolean check);
         public void isContactCreated(boolean check);
+        public void isBusinessCreated(boolean check);
         public void isContactImportComplete(List<Contact> contactList);
         public void isBusinessImportComplete(List<Business> businessList);
     }

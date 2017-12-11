@@ -233,6 +233,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void isBusinessCreated(boolean check) {
+
+    }
+
+    @Override
     public void isContactImportComplete(List<Contact> contactList) {
         this.contactList = contactList;
         DatabaseManager d = new DatabaseManager();

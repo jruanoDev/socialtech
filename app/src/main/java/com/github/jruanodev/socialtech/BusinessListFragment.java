@@ -68,20 +68,20 @@ public class BusinessListFragment extends Fragment {
             populateListView();
         }
 
-        /*fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
 
-                FormFragment formFragment = new FormFragment();
+                BusinessFormFragment businessFormFragment = new BusinessFormFragment();
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("contactList", (ArrayList<? extends Parcelable>) businessList);
-                formFragment.setArguments(bundle);
-                ft.replace(R.id.fragmentContainer, formFragment).commit();
+                bundle.putParcelableArrayList("businessList", (ArrayList<? extends Parcelable>) businessList);
+                businessFormFragment.setArguments(bundle);
+                ft.replace(R.id.fragmentContainer, businessFormFragment).commit();
             }
-        });*/
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

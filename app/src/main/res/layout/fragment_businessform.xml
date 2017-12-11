@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fistContainer"
+            android:orientation="vertical"
+            android:background="#f8f8f8">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#FFFFFF">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/business"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="27dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginLeft="30dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nombre de la empresa"
+                        android:id="@+id/bNombre"
+                        android:maxLines="1"
+                        android:maxLength="30"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#FFFFFF">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/phone"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginLeft="30dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Telefono"
+                        android:id="@+id/bTelefono"
+                        android:inputType="phone"
+                        android:maxLines="1"
+                        android:maxLength="15"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#FFFFFF">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/email"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginLeft="30dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:id="@+id/bEmail"
+                        android:maxLines="1"
+                        android:maxLength="15"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#FFFFFF">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/location"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="20dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginLeft="30dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Dirección"
+                        android:inputType="textEmailAddress"
+                        android:id="@+id/bAddress"
+                        android:maxLength="40"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#FFFFFF">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginLeft="80dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ciudad"
+                        android:inputType="textEmailAddress"
+                        android:id="@+id/bCity"
+                        android:maxLines="1"
+                        android:maxLength="25"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#FFFFFF"
+                android:paddingBottom="10dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginLeft="80dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Provincia"
+                        android:inputType="textEmailAddress"
+                        android:id="@+id/bCountry"
+                        android:maxLines="1"
+                        android:maxLength="25"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:paddingLeft="48dp"
+                android:layout_marginTop="8dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_below="@id/fistContainer">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Información"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="32dp"
+                        android:textColor="#4c4c4c"
+                        android:textSize="17sp"/>
+
+                </LinearLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Información sobre la empresa"
+                        android:inputType="textEmailAddress"
+                        android:id="@+id/bInfo"
+                        android:maxLength="80"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:paddingLeft="48dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="15dp"
+                android:layout_below="@id/fistContainer">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contacto asociado"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginLeft="32dp"
+                        android:textColor="#4c4c4c"
+                        android:textSize="17sp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:id="@+id/associatedContact"
+                    android:text="Añade un contacto"
+                    android:layout_marginLeft="31dp">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right|center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="RESETEAR"
+                    android:textSize="14sp"
+                    android:id="@+id/btnResetB"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="#00ffffff"/>
+
+                <Button
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="GUARDAR"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:id="@+id/btnSaveB"/>
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</ScrollView>
